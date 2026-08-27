@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Qalam — Arabic Letterforms & Tracing</title>
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" href="icons/icon-192.png" />
+<link rel="apple-touch-icon" href="icons/icon-192.png" />
+<meta name="theme-color" content="#2E4A3D" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Qalam" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ============ HOME SCREEN ============ -->
+  <section id="screenHome" class="screen active">
+    <header class="home-header">
+      <div class="qalam-arabic hero-letter">قلم</div>
+      <div class="qalam-mono eyebrow">Qalam</div>
+      <div class="home-sub">Arabic Letterforms &amp; Tracing</div>
+    </header>
+
+    <div class="progress-card">
+      <svg class="ring" viewBox="0 0 100 100" width="88" height="88">
+        <circle class="ring-track" cx="50" cy="50" r="42"></circle>
+        <circle id="ringFill" class="ring-fill" cx="50" cy="50" r="42"></circle>
+      </svg>
+      <div class="progress-card-text">
+        <div id="progressCount" class="progress-count">0 / 28</div>
+        <div class="qalam-mono progress-label">letters practiced</div>
+      </div>
+    </div>
+
+    <div id="continueCard" class="continue-card hidden">
+      <div class="continue-info">
+        <div class="qalam-mono continue-label">Continue tracing</div>
+        <div id="continueName" class="continue-name">—</div>
+      </div>
+      <div id="continueGlyph" class="qalam-arabic continue-glyph"></div>
+    </div>
+
+    <div class="home-tiles">
+      <button class="tile" id="tileReference">
+        <span class="tile-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5c2-1 5-1 7 0v14c-2-1-5-1-7 0v-14Z"/><path d="M18 5.5c-2-1-5-1-7 0v14c2-1 5-1 7 0v-14Z"/></svg></span>
+        <span class="tile-title">Reference</span>
+        <span class="tile-sub">Browse all 28 letters</span>
+      </button>
+      <button class="tile tile-accent" id="tileTrace">
+        <span class="tile-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20c3-.5 4.5-1.5 6-3.5C14 12 16 8 19 5"/><path d="M16 4.2c1 .3 2 1.3 2.5 2.4-1 1-2.2 1.6-3.4 1.3-.4-1.2 0-2.6.9-3.7Z"/><circle cx="5" cy="19.2" r="1.1" fill="currentColor" stroke="none"/></svg></span>
+        <span class="tile-title">Trace</span>
+        <span class="tile-sub">Practice by hand</span>
+      </button>
+    </div>
+
+    <button id="installBtn" class="qalam-btn install-btn hidden">⭳ Install Qalam</button>
+  </section>
+
+  <!-- ============ REFERENCE SCREEN ============ -->
+  <section id="screenReference" class="screen">
+    <header class="screen-header">
+      <button class="back-btn" data-back><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5 8 12l7 7"/></svg></button>
+      <div class="screen-title">Reference</div>
+      <div class="header-spacer"></div>
+    </header>
+
+    <div class="screen-body">
+      <div class="detail-card">
+        <div id="detailLetter" class="qalam-arabic ink-reveal detail-letter"></div>
+        <div class="detail-info">
+          <div id="detailName" class="detail-name"></div>
+          <div id="detailMeta" class="qalam-mono detail-meta"></div>
+          <div id="formsRow" class="forms-row"></div>
+          <button class="qalam-btn practice-btn" id="btnTraceThis">Trace this letter →</button>
+        </div>
+      </div>
+
+      <div class="qalam-mono section-label">The 28 letters</div>
+      <div id="letterGrid" class="letter-grid"></div>
+    </div>
+  </section>
+
+  <!-- ============ TRACE SCREEN ============ -->
+  <section id="screenTrace" class="screen">
+    <header class="screen-header">
+      <button class="back-btn" data-back><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5 8 12l7 7"/></svg></button>
+      <div class="screen-title">Trace</div>
+      <div class="header-spacer"></div>
+    </header>
+
+    <div class="screen-body">
+      <div class="practice-nav">
+        <button class="qalam-btn nav-btn" id="btnPrev">‹</button>
+        <div>
+          <div id="practiceName" class="practice-name"></div>
+          <div id="practiceTranslit" class="qalam-mono practice-translit"></div>
+        </div>
+        <button class="qalam-btn nav-btn" id="btnNext">›</button>
+      </div>
+
+      <div class="canvas-wrap">
+        <canvas id="traceCanvas"></canvas>
+      </div>
+
+      <div id="strokeStatus" class="qalam-mono stroke-status">trace the faint letter</div>
+
+      <button class="qalam-btn clear-btn" id="btnClear">Clear</button>
+    </div>
+  </section>
+
+  <!-- ============ BOTTOM TAB BAR ============ -->
+  <nav class="tabbar">
+    <button class="tab active" data-tab="home">
+      <span class="tab-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1H10v-5.5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1V20h3.5a1 1 0 0 0 1-1v-9"/></svg></span>
+      <span class="tab-label">Home</span>
+    </button>
+    <button class="tab" data-tab="reference">
+      <span class="tab-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5c2-1 5-1 7 0v14c-2-1-5-1-7 0v-14Z"/><path d="M18 5.5c-2-1-5-1-7 0v14c2-1 5-1 7 0v-14Z"/></svg></span>
+      <span class="tab-label">Learn</span>
+    </button>
+    <button class="tab" data-tab="trace">
+      <span class="tab-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20c3-.5 4.5-1.5 6-3.5C14 12 16 8 19 5"/><path d="M16 4.2c1 .3 2 1.3 2.5 2.4-1 1-2.2 1.6-3.4 1.3-.4-1.2 0-2.6.9-3.7Z"/><circle cx="5" cy="19.2" r="1.1" fill="currentColor" stroke="none"/></svg></span>
+      <span class="tab-label">Trace</span>
+    </button>
+  </nav>
+
+</div>
+
+<script src="script.js"></script>
+<script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("sw.js").catch(() => {});
+    });
+  }
+
+  let deferredPrompt;
+  const installBtn = document.getElementById("installBtn");
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.classList.remove("hidden");
+  });
+  installBtn.addEventListener("click", async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    installBtn.classList.add("hidden");
+  });
+  window.addEventListener("appinstalled", () => {
+    installBtn.classList.add("hidden");
+  });
+</script>
+</body>
+</html>
